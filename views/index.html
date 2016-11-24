@@ -1,0 +1,125 @@
+<html>
+  <script src="../node_modules/angular/angular.js"></script>
+  <head>
+    <link
+      href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700'
+      rel='stylesheet'
+      type='text/css'>
+    <link
+      href='/public/stylesheets/klarna-ui-css-components.css'
+      rel='stylesheet'
+      type='text/css'>
+    <style>
+      .search {
+        margin: 0 auto;
+        width: 800px;
+      }
+
+      .user-avatar {
+        float: left;
+        margin-right: 12px;
+        width: 40px;
+        border-radius: 40px;
+      }
+
+      .results {
+        margin-top: 40px;
+      }
+    </style>
+    <title>Exercise</title>
+  </head>
+  <body ng-app="yellowPages">
+    <div class="search">
+      <div class="cui__input giant" ng-controller="searchController">
+        <input class="cui__input__input" ng-model="searchCriteria" placeholder="Type your search query"/>
+      </div>
+
+      <div class="results">
+
+        <div class="cui__selector--direct title">
+
+          <h2 class="cui__selector--direct__title">
+            Search results
+          </h2>
+
+          <div class="cui__selector--direct__item">
+            <img class="user-avatar" src="/public/images/anscombe.jpg" />
+
+            <div class="cui__selector--direct__label">
+              Elizabeth Anscombe
+            </div>
+
+            <p class="cui__selector--direct__description">
+              Mackenzie Av, 34. Toronto, Canada.
+            </p>
+          </div>
+
+          <div class="cui__selector--direct__item">
+            <img class="user-avatar" src="/public/images/tarski.jpg" />
+
+            <div class="cui__selector--direct__label">
+              Alfred Tarski
+            </div>
+
+            <p class="cui__selector--direct__description">
+              Mackenzie Av, 34. Toronto, Canada.
+            </p>
+          </div>
+
+          <div class="cui__selector--direct__item">
+            <img class="user-avatar" src="/public/images/quine.jpg" />
+
+            <div class="cui__selector--direct__label">
+              Willard Van Orman Quine
+            </div>
+
+            <p class="cui__selector--direct__description">
+              Mackenzie Av, 34. Toronto, Canada.
+            </p>
+          </div>
+
+          <div class="cui__selector--direct__item">
+            <img class="user-avatar" src="/public/images/nussbaum.jpg" />
+
+            <div class="cui__selector--direct__label">
+              Martha Craven Nussbaum
+            </div>
+
+            <p class="cui__selector--direct__description">
+              Mackenzie Av, 34. Toronto, Canada.
+            </p>
+          </div>
+
+          <div class="cui__selector--direct__item">
+            <img class="user-avatar" src="/public/images/beauvoir.jpg" />
+
+            <div class="cui__selector--direct__label">
+              Simone de Beauvoir
+            </div>
+
+            <p class="cui__selector--direct__description">
+              Mackenzie Av, 34. Toronto, Canada.
+            </p>
+          </div>
+
+          <div class="cui__selector--direct__item">
+            <img class="user-avatar" src="/public/images/russell.jpg" />
+
+            <div class="cui__selector--direct__label">
+              Bertrand Arthur William Russell
+            </div>
+
+            <p class="cui__selector--direct__description">
+              Mackenzie Av, 34. Toronto, Canada.
+            </p>
+          </div>
+
+
+        </div>
+
+      </div>
+    </div>
+  </body>
+  <script src="/views/client.js"></script>
+  <script src="/views/searchController.js"></script>
+</html>
