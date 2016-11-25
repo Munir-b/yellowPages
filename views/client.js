@@ -1,3 +1,3 @@
 (function(){
-  angular.module('yellowPages', []);
+  angular.module('yellowPages', ['elasticsearch']);
 })();
