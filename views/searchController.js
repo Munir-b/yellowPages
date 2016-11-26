@@ -1,6 +1,6 @@
 (function(){
   angular.module('yellowPages')
-  .controller('searchController', ['$scope', 'elasticClient', '$http', function($scope, elasticClient, $http){
+  .controller('searchController', ['$scope', '$http', function($scope, $http){
     $scope.results = [];
     $scope.$watch('searchCriteria', function(data){
       if(!data) return;
@@ -23,7 +23,7 @@
           var item = {};
           item.name = hit._source.name;
           item.address = hit._source.address;
-          item.age = hit._source.birthday;
+          item.age = calculateAge(hit._source.birthday);
           item.phone = hit._source.phone;
           item.avatar = hit._source.avatar_origin;
           results.push(item);
@@ -32,5 +32,25 @@
       return results;
     }
 
+    function calculateAge(birthday){
+
+      if (birthday.value != '') {
+
+        var birthdayDate = new Date(birthday);
+        var dateNow = new Date();
+
+        var years = dateNow.getFullYear() - birthdayDate.getFullYear();
+        var months = dateNow.getMonth()-birthdayDate.getMonth();
+        var days = dateNow.getDate()-birthdayDate.getDate();
+        if (isNaN(years)) {
+          return '';
+        } else {
+          if(months < 0 || (months == 0 && days < 0)) {
+            years = parseInt(years) -1;
+          }
+          return years;
+        }
+      }
+    }
   }]);
 })();
