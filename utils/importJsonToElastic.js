@@ -1,4 +1,5 @@
 (function importToElastic(indexName, docType, elasticUrl, elasticPort){
+	'use strict';
 	var elasticsearch = require('elasticsearch');
 	var fs = require('fs');
 	var people = JSON.parse(fs.readFileSync(__dirname + '/../people.json'));

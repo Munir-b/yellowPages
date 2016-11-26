@@ -1,4 +1,5 @@
 (function(){
+  'use strict';
   angular.module('yellowPages')
   .controller('searchController', ['$scope', '$http', function($scope, $http){
     $scope.results = [];
