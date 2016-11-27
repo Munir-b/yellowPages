@@ -3,6 +3,7 @@
   var express = require('express');
   var router = express.Router();
   var elasticSearch = require('elasticsearch');
+  var utils = require('../utils/utils');
   var serverOptions =
   {
     hosts: [
@@ -21,13 +22,12 @@
   router.post("/search", function(req, res) {
     var termToSearch = req.body.query.termToSearch;
     console.log("termToSearch=" + termToSearch);
+    var query = utils.prepareQuery(termToSearch);
     elasticSearchClient.search({
       index: 'people',
       type: 'yellow_pages',
       body: {
-        query: {
-          term: {name: termToSearch}
-        }
+        query: query
       }
     }, function(err, response) {
       if (err) {

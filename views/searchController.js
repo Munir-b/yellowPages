@@ -41,20 +41,23 @@
 
       if (birthday.value != '') {
 
-        var birthdayDate = new Date(birthday);
-        var dateNow = new Date();
-
-        var years = dateNow.getFullYear() - birthdayDate.getFullYear();
-        var months = dateNow.getMonth()-birthdayDate.getMonth();
-        var days = dateNow.getDate()-birthdayDate.getDate();
-        if (isNaN(years)) {
-          return '';
-        } else {
-          if(months < 0 || (months == 0 && days < 0)) {
-            years = parseInt(years) -1;
-          }
-          return years;
-        }
+        // var birthdayDate = new Date(birthday);
+        // var dateNow = new Date();
+        //
+        // var years = dateNow.getFullYear() - birthdayDate.getFullYear();
+        // var months = dateNow.getMonth()-birthdayDate.getMonth();
+        // var days = dateNow.getDate()-birthdayDate.getDate();
+        // if (isNaN(years)) {
+        //   return '';
+        // } else {
+        //   if(months < 0 || (months == 0 && days < 0)) {
+        //     years = parseInt(years) -1;
+        //   }
+        //   return years;
+        // }
+        var ageDifMs = Date.now() - birthday;
+        var ageDate = new Date(ageDifMs); // miliseconds from epoch
+        return Math.abs(ageDate.getUTCFullYear() - 1970);
       }
     }
   }]);
