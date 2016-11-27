@@ -3,11 +3,15 @@
   angular.module('yellowPages')
   .controller('searchController', ['$scope', '$http', function($scope, $http){
     $scope.results = [];
-    $scope.$watch('searchCriteria', function(data){
-      if(!data) return;
+    $scope.$watch('searchCriteria', function(term){
+      search(term);
+    });
+
+    var search = _.debounce(function(term){
+      if(!term) return;
       $http.post('/search', {
         query: {
-          termToSearch: data
+          termToSearch: term
         }
       }).then(function success(res){
         $scope.results = parseResponse(res);
@@ -15,7 +19,7 @@
         console.log('FAILURE');
         console.log(error);
       });
-    });
+    }, 250);
 
     function parseResponse(res) {
       var results = [];
