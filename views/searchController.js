@@ -4,17 +4,21 @@
   .controller('searchController', ['$scope', '$http', function($scope, $http){
     $scope.results = [];
     $scope.$watch('searchCriteria', function(term){
+      if(!term){
+        $scope.results = [];
+        return;
+      }
       search(term);
     });
 
     var search = _.debounce(function(term){
-      if(!term) return;
       $http.post('/search', {
         query: {
           termToSearch: term
         }
       }).then(function success(res){
-        $scope.results = parseResponse(res);
+        var results = parseResponse(res);
+        $scope.results = resizeImages(results);
       }, function failure(error){
         console.log('FAILURE');
         console.log(error);
@@ -44,6 +48,13 @@
         var ageDate = new Date(ageDifMs); // miliseconds from epoch
         return Math.abs(ageDate.getUTCFullYear() - 1970);
       }
+    }
+
+    function resizeImages(res){
+      for(var i=0;i<res.length;i++){
+        res[i].avatar.replace('400x400', '50x50');
+      }
+      return res;
     }
   }]);
 })();
