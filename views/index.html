@@ -31,7 +31,7 @@
   <body ng-app="yellowPages">
     <div class="search" ng-controller="searchController">
       <div class="cui__input giant">
-        <input class="cui__input__input" ng-model="searchCriteria" placeholder="Type your search query"/>
+        <input class="cui__input__input" ng-model="searchCriteria.term" placeholder="Type your search query"/>
       </div>
 
       <div class="results">
@@ -54,6 +54,9 @@
               <span>Phone: {{result.phone}}</span><br/>
               {{result.address.street}}. {{result.address.city}}, {{result.address.country}}.
             </p>
+          </div>
+          <div ng-if="searchCriteria.term && results.length === 0">
+            No results found, please change your search criteria.
           </div>
 
         </div>

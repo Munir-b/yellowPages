@@ -3,7 +3,8 @@
   angular.module('yellowPages')
   .controller('searchController', ['$scope', '$http', function($scope, $http){
     $scope.results = [];
-    $scope.$watch('searchCriteria', function(term){
+    $scope.searchCriteria = {};
+    $scope.$watch('searchCriteria.term', function(term){
       if(!term){
         $scope.results = [];
         return;
