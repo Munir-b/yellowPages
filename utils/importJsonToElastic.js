@@ -83,6 +83,16 @@
 							"lowercase",
 							"asciifolding"
 						]
+					},
+					"remove_hyphen_analyzer" : {
+						"tokenizer" : "standard",
+						"char_filter" : ["hyphen_mapping"]
+					}
+				},
+				"char_filter" : {
+					"hyphen_mapping" : {
+						"type" : "mapping",
+						"mappings" : ["-=>"]
 					}
 				}
 			}
