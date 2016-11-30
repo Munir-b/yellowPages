@@ -47,57 +47,112 @@
 	function createIndex() {
 		var body = {};
 		body.mappings = {};
-		body.mappings[docType] = {
-					"properties": {
-						"address": {
-							"properties": {
-								"city": {
-									"type": "string"
-								},
-								"country": {
-									"type": "string"
-								},
-								"street": {
-									"type": "string"
-								}
-							}
-						},
-						"avatar_image": {
-							"type": "string"
-						},
-						"avatar_origin": {
-							"type": "string"
-						},
-						"birthday": {
-							"type": "long",
-							"index" : "not_analyzed"
-						},
-						"chuck": {
-							"type": "string"
-						},
-						"email": {
-							"type": "string"
-						},
-						"id": {
-							"type": "string"
-						},
-						"name": {
-							"type": "string",
-							"index" : "not_analyzed"
-						},
-						"phone": {
-							"type": "string",
-							"index" : "not_analyzed"
-						},
-						"quote": {
-							"type": "string"
-						}
+		body.settings = {
+			"analysis": {
+				"filter": {
+					"nGram_filter": {
+						"type": "nGram",
+						"min_gram": 1,
+						"max_gram": 20,
+						"token_chars": [
+							"letter",
+							"digit",
+							"punctuation",
+							"symbol"
+						]
 					}
-				};
-
+				},
+				"analyzer": {
+					"nGram_analyzer": {
+						"type": "custom",
+						"tokenizer": "whitespace",
+						"filter": [
+							"lowercase",
+							"asciifolding",
+							"nGram_filter"
+						]
+					},
+					"whitespace_analyzer": {
+						"type": "custom",
+						"tokenizer": "whitespace",
+						"filter": [
+							"lowercase",
+							"asciifolding"
+						]
+					}
+				}
+			}
+		};
+		body.mappings[docType] = {
+			_all: {
+				"analyzer": "nGram_analyzer",
+				"search_analyzer": "whitespace_analyzer"
+			},
+			properties: {
+				"address": {
+					"properties": {
+						"city": {
+							"type": "string",
+							"index": "no",
+							"include_in_all": false
+						},
+						"country": {
+							"type": "string",
+							"index": "no",
+							"include_in_all": false
+						},
+						"street": {
+							"type": "string",
+							"index": "no",
+							"include_in_all": false
+						}
+					},
+					"include_in_all": false
+				},
+				"avatar_image": {
+					"type": "string",
+					"index": "no",
+					"include_in_all": false
+				},
+				"avatar_origin": {
+					"type": "string",
+					"index": "no",
+					"include_in_all": false
+				},
+				"birthday": {
+					"type": "long",
+					"index" : "not_analyzed"
+				},
+				"chuck": {
+					"type": "string",
+					"index": "no",
+					"include_in_all": false
+				},
+				"email": {
+					"type": "string",
+					"index": "no",
+					"include_in_all": false
+				},
+				"id": {
+					"type": "string",
+					"index": "no",
+					"include_in_all": false
+				},
+				"name": {
+					"type": "text"
+				},
+				"phone": {
+					"type": "string"
+				},
+				"quote": {
+					"type": "string",
+					"index": "no",
+					"include_in_all": false
+				}
+			}
+		};
 		client.indices.create({
 			index: indexName,
-			type: docType,
 			body: body
 		}, function(error,response) {
 			if(error){
