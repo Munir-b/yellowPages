@@ -135,7 +135,8 @@
 				},
 				"birthday": {
 					"type": "long",
-					"index" : "not_analyzed"
+					"index" : "not_analyzed",
+					"include_in_all": false
 				},
 				"chuck": {
 					"type": "string",
@@ -156,7 +157,7 @@
 					"type": "text"
 				},
 				"phone": {
-					"type": "string"
+					"type": "text"
 				},
 				"quote": {
 					"type": "string",
