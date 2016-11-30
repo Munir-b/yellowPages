@@ -13,10 +13,11 @@
        return i === '';
     });
     _.forEach(criteriaArray, function(criteria) {
-      //phone or age
-      criteria = criteria.replace('-','');
       var criteriaNumericValue = parseInt(criteria);
-      if(criteriaNumericValue !== NaN){
+      if(Number.isNaN(criteriaNumericValue) || criteriaNumericValue !== criteriaNumericValue){
+        //name
+        res.name.push(criteria);
+      } else {
         if(criteria.length <= 3){
           //age
           res.age.push(criteriaNumericValue);
@@ -24,9 +25,6 @@
           //phone
           res.phone.push(criteriaNumericValue);
         }
-      } else {
-        //name
-        res.name.push(criteria);
       }
     });
     return res;
@@ -38,30 +36,7 @@
       return {};
     }
     var query = {};
-    query.bool = {};
-    query.bool.must = [];
-    var names = {bool: {should:[]}};
-    var ages = {bool: {should:[]}};
-    var phones = {bool: {should:[]}};
-    _.forEach(res.names, function(name){
-      names.bool.should.push({term:{name:name}});
-    });
-    _.forEach(res.age, function(age){
-      var birthdayBoundaries = api.calculateBirthday(age);
-      ages.bool.should.push({range:{birthday:{gt: birthdayBoundaries.higherBirthday, lte: birthdayBoundaries.lowerBirthday}}});
-    });
-    _.forEach(res.phone, function(phone){
-      phones.bool.should.push({term:{phone:phone}});
-    });
-    if(names.bool.should.length > 0){
-      query.bool.must.push(names);
-    }
-    if(ages.bool.should.length > 0){
-      query.bool.must.push(ages);
-    }
-    if(phones.bool.should.length > 0){
-      query.bool.must.push(phones);
-    }
+    query.match = {_all: {query: res.name, operator: 'and'}};
     return query;
   };
 
