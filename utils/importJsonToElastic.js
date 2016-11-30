@@ -48,6 +48,10 @@
 		var body = {};
 		body.mappings = {};
 		body.settings = {
+			"index" : {
+				"number_of_shards" : 1,
+				"number_of_replicas" : 1
+			},
 			"analysis": {
 				"filter": {
 					"nGram_filter": {
