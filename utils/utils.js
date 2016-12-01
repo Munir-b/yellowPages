@@ -5,7 +5,7 @@
   //365*24*60*60*1000
   var ONE_YEAR = 31536000000;
   api.parse = function(str) {
-    var res = {name:[], age: [], phone: []};
+    var res = {nameOrPhone:[], age: []};
     if(!str) return res;
     var criteriaArray = str.split(' ');
     //removing spaces
@@ -16,14 +16,14 @@
       var criteriaNumericValue = parseInt(criteria);
       if(Number.isNaN(criteriaNumericValue) || criteriaNumericValue !== criteriaNumericValue){
         //name
-        res.name.push(criteria);
+        res.nameOrPhone.push(criteria);
       } else {
-        if(criteria.length <= 3){
+        if(criteria.length <= 2){
           //age
           res.age.push(criteriaNumericValue);
         } else {
           //phone
-          res.phone.push(criteriaNumericValue);
+          res.nameOrPhone.push(criteria);
         }
       }
     });
@@ -32,21 +32,24 @@
 
   api.prepareQuery = function(str){
     var res = api.parse(str);
-    if(res.name.length === 0 && res.age.length === 0 && res.phone.length === 0){
+    if(res.nameOrPhone.length === 0 && res.age.length === 0){
       return {};
     }
-    var query = {};
-    query.match = {_all: {query: res.name, operator: 'and'}};
+    var query = {bool:{must:[]}};
+    if(res.nameOrPhone.length > 0) {
+      query.bool.must.push({match:{_all: {query: res.nameOrPhone.join(' '), operator: 'and'}}});
+    }
+    if(res.age.length > 0){
+      var birthday = api.calculateBirthdayRange(res.age[0]);
+      query.bool.must.push({range:{birthday:{lte: birthday.exact, gt: birthday.older}}});
+    }
     return query;
   };
 
-  api.calculateBirthday = function(age){
-    if(isNaN(age)){
-      return 0;
-    }
-    var lowerBirthday = Date.now() - age*ONE_YEAR;
-    var higherBirthday = lowerBirthday-ONE_YEAR;
-    return {lowerBirthday: lowerBirthday, higherBirthday: higherBirthday};
+  api.calculateBirthdayRange = function(age){
+    var exact = Date.now() - age*ONE_YEAR;
+    var older = exact-ONE_YEAR;
+    return {exact: exact, older: older};
   };
 
   module.exports = api;
