@@ -2,33 +2,48 @@
   'use strict';
   angular.module('yellowPages')
   .controller('searchController', ['$scope', '$http', function($scope, $http){
-    $scope.results = [];
-    $scope.searchCriteria = {};
+    var DEFAULT_PAGE_SIZE = 10;
+    var DEFAULT_PAGE_NUMBER = 0;
+
+    init();
     $scope.$watch('searchCriteria.term', function(term){
       if(!term){
-        $scope.results = [];
+        init();
         return;
       }
-      search(term);
+      search(term, DEFAULT_PAGE_NUMBER, DEFAULT_PAGE_SIZE, true);
     });
 
-    var search = _.debounce(function(term){
+    var search = _.debounce(function(term, pageNumber, pageSize, newSearch){
       $http.post('/search', {
         query: {
-          termToSearch: term
+          termToSearch: term,
+          from: pageNumber,
+          pageSize: pageSize
         }
       }).then(function success(res){
         var results = parseResponse(res);
         $scope.results = resizeImages(results);
+        //new search
+        if(newSearch){
+          calculatePages($scope.results.totalHits);
+        }
       }, function failure(error){
         console.log('FAILURE');
         console.log(error);
       });
     }, 150);
 
+    function init(){
+      $scope.searchCriteria = {};
+      $scope.pagination = {currentPage: 1, totalItems: 0, pageSize: 10, maxSize: 12};
+      initResults();
+    }
+
     function parseResponse(res) {
-      var results = [];
+      var results = {totalHits:0, items:[]};
       if(res && res.data && res.data.hits && res.data.hits.hits){
+        results.totalHits = res.data.hits.total;
         _.forEach(res.data.hits.hits, function(hit){
           var item = {};
           item.name = hit._source.name;
@@ -36,7 +51,7 @@
           item.age = calculateAge(hit._source.birthday);
           item.phone = hit._source.phone;
           item.avatar = hit._source.avatar_origin;
-          results.push(item);
+          results.items.push(item);
         });
       }
       return results;
@@ -57,5 +72,20 @@
       }
       return res;
     }
+
+    function initResults(){
+      $scope.results = {totalHits: 0, items: []};
+    }
+
+    function calculatePages(totalItems){
+      $scope.pagination.totalItems = totalItems;
+    }
+    $scope.pageChanged = function() {
+      var pageSize = $scope.pagination.pageSize;
+      var currentPage = $scope.pagination.currentPage;
+      var term = $scope.searchCriteria.term;
+      search(term, (currentPage-1)*pageSize, pageSize, false);
+    }
+
   }]);
 })();

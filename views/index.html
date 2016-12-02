@@ -6,9 +6,13 @@
       rel='stylesheet'
       type='text/css'>
     <link
-      href='/public/stylesheets/klarna-ui-css-components.css'
+      href='/node_modules/bootstrap/dist/css/bootstrap.min.css'
       rel='stylesheet'
       type='text/css'>
+    <link
+            href='/public/stylesheets/klarna-ui-css-components.css'
+            rel='stylesheet'
+            type='text/css'>
     <style>
       .search {
         margin: 0 auto;
@@ -41,8 +45,8 @@
           <h2 class="cui__selector--direct__title">
             Search results
           </h2>
-
-          <div ng-repeat="result in results" class="cui__selector--direct__item">
+          <br>
+          <div ng-repeat="result in results.items" class="cui__selector--direct__item">
             <img class="user-avatar" ng-src="{{result.avatar}}" />
 
             <div class="cui__selector--direct__label">
@@ -58,13 +62,20 @@
           <div ng-if="searchCriteria.term && results.length === 0">
             No results found, please change your search criteria.
           </div>
+          <uib-pagination total-items="pagination.totalItems"
+                          ng-model="pagination.currentPage"
+                          boundary-link-numbers="true"
+                          max-size="pagination.maxSize"
+                          ng-change="pageChanged()"
+                          ng-if="pagination.totalItems > 0">
 
+          </uib-pagination>
         </div>
-
       </div>
     </div>
   </body>
   <script src="../node_modules/lodash/lodash.min.js"></script>
+  <script src="../node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
   <script src="/views/client.js"></script>
   <script src="/views/searchController.js"></script>
 </html>

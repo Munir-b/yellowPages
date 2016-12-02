@@ -1,4 +1,4 @@
 (function(){
   'use strict';
-  angular.module('yellowPages', []);
+  angular.module('yellowPages', ['ui.bootstrap']);
 })();

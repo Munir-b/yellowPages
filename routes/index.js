@@ -21,17 +21,21 @@
   /* GET search results. */
   router.post("/search", function(req, res) {
     var termToSearch = req.body.query.termToSearch;
-    console.log("termToSearch=" + termToSearch);
+    var from = req.body.query.from || 0;
+    var size = req.body.query.pageSize || 10;
     var query = utils.prepareQuery(termToSearch);
     elasticSearchClient.search({
       index: 'people',
       type: 'yellow_pages',
+      from: from,
+      size: size,
       body: {
         query: query
       }
     }, function(err, response) {
       if (err) {
         res.status(500);
+        res.message(err);
         console.log('error')
       } else {
         res.status(200).json(response);
