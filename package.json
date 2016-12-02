@@ -7,8 +7,9 @@
   },
   "dependencies": {
     "angular": "^1.5.8",
-    "angular-ui-bootstrap": "^2.3.0",
+    "angular-ui-bootstrap": "^1.0.3",
     "body-parser": "~1.15.2",
+    "bootstrap": "^3.3.6",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
     "elasticsearch": "^12.1.0",
