@@ -32,6 +32,7 @@
 			}
 		}
 		pushToElastic(bulkToPush);
+		console.log('finished importing to Elasticsearch');
 	}
 
 	function pushToElastic(bulkToPush){
