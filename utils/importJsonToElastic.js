@@ -35,6 +35,9 @@
 	}
 
 	function pushToElastic(bulkToPush){
+		if(bulkToPush.length === 0){
+			return;
+		}
 		client.bulk({
 			body: bulkToPush
 		}, function(error, response) {
