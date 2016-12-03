@@ -2,11 +2,12 @@
   'use strict';
   angular.module('yellowPages')
   .controller('searchController', ['$scope', '$http', function($scope, $http){
+    var vm = this;
     var DEFAULT_PAGE_SIZE = 10;
     var DEFAULT_PAGE_NUMBER = 0;
 
     init();
-    $scope.$watch('searchCriteria.term', function(term){
+    $scope.$watch('vm.searchCriteria.term', function(term){
       if(!term){
         init();
         return;
@@ -23,10 +24,10 @@
         }
       }).then(function success(res){
         var results = parseResponse(res);
-        $scope.results = resizeImages(results);
+        vm.results = resizeImages(results);
         //new search
         if(newSearch){
-          calculatePages($scope.results.totalHits);
+          calculatePages(vm.results.totalHits);
         }
       }, function failure(error){
         console.log('FAILURE');
@@ -35,8 +36,8 @@
     }, 150);
 
     function init(){
-      $scope.searchCriteria = {};
-      $scope.pagination = {currentPage: 1, totalItems: 0, pageSize: 10, maxSize: 12};
+      vm.searchCriteria = {};
+      vm.pagination = {currentPage: 1, totalItems: 0, pageSize: 10, maxSize: 12};
       initResults();
     }
 
@@ -74,16 +75,16 @@
     }
 
     function initResults(){
-      $scope.results = {totalHits: 0, items: []};
+      vm.results = {totalHits: 0, items: []};
     }
 
     function calculatePages(totalItems){
-      $scope.pagination.totalItems = totalItems;
+      vm.pagination.totalItems = totalItems;
     }
-    $scope.pageChanged = function() {
-      var pageSize = $scope.pagination.pageSize;
-      var currentPage = $scope.pagination.currentPage;
-      var term = $scope.searchCriteria.term;
+    vm.pageChanged = function() {
+      var pageSize = vm.pagination.pageSize;
+      var currentPage = vm.pagination.currentPage;
+      var term = vm.searchCriteria.term;
       search(term, (currentPage-1)*pageSize, pageSize, false);
     }
 
