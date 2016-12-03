@@ -32,6 +32,7 @@
       }, function failure(error){
         console.log('FAILURE');
         console.log(error);
+        alert('an error occurred, check browser console');
       });
     }, 150);
 
@@ -81,6 +82,7 @@
     function calculatePages(totalItems){
       vm.pagination.totalItems = totalItems;
     }
+
     vm.pageChanged = function() {
       var pageSize = vm.pagination.pageSize;
       var currentPage = vm.pagination.currentPage;

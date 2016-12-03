@@ -40,7 +40,6 @@
       if (err) {
         res.status(500);
         res.message(err);
-        console.log('error')
       } else {
         res.status(200).json(response);
       }
