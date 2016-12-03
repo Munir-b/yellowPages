@@ -67,7 +67,7 @@
                           boundary-link-numbers="true"
                           max-size="vm.pagination.maxSize"
                           ng-change="vm.pageChanged()"
-                          ng-if="vm.pagination.totalItems > 0">
+                          ng-if="vm.pagination.totalItems > vm.pagination.pageSize">
 
           </uib-pagination>
         </div>
