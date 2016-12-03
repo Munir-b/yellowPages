@@ -59,7 +59,7 @@
               {{result.address.street}}. {{result.address.city}}, {{result.address.country}}.
             </p>
           </div>
-          <div ng-if="vm.searchCriteria.term && vm.results.length === 0">
+          <div ng-if="vm.results.totalHits === 0 && vm.searchCriteria.term">
             No results found, please change your search criteria.
           </div>
           <uib-pagination total-items="vm.pagination.totalItems"
