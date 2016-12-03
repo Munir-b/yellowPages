@@ -23,6 +23,10 @@
     var termToSearch = req.body.query.termToSearch;
     var from = req.body.query.from || 0;
     var size = req.body.query.pageSize || 10;
+    var max_result_window = 1000000;
+    if(from+size > max_result_window){
+      size = max_result_window-from;
+    }
     var query = utils.prepareQuery(termToSearch);
     elasticSearchClient.search({
       index: 'people',
